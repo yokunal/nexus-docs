@@ -1,3 +1,9 @@
+```text
+ _  _ ____ _  _ _  _ ____ 
+ |\ | |___  \/  |  | [__  
+ | \| |___ _/\_ |__| ___] 
+```
+
 # Nexus — Overview
 
 **Nexus** is an elite autonomous AI coding harness built in native Rust. It operates
