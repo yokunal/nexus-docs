@@ -147,70 +147,95 @@
   .statusbar .right b{color:var(--heading)}
   /* ── 404 ── */
   main .nf{color:var(--heading); font-size:3rem; letter-spacing:6px}
-  /* ── mobile & tablet responsive styling ── */
+  /* ── mobile & tablet: card-grid drawer menu design ── */
   @media(max-width:1024px){
     body{
       grid-template-columns:1fr;
-      grid-template-rows:46px 48px 1fr 32px;
+      grid-template-rows:50px 1fr 32px;
       grid-template-areas:
         "titlebar"
-        "sidebar"
         "viewport"
         "statusbar";
       height:100vh;
       overflow:hidden;
     }
     .titlebar{
-      padding:0 10px;
+      padding:0 14px;
+      justify-content:space-between;
+      z-index:100;
+    }
+    .titlebar .path::after{
+      content:" ▾";
+      color:var(--heading);
+      font-weight:bold;
     }
     .rev{
       display:none;
     }
+    /* transform sidebar into a sleek overlay drawer / modal menu */
     .sidebar{
+      position:fixed;
+      top:50px;
+      left:0;
+      width:100%;
+      height:calc(100vh - 82px);
+      background:var(--bg);
       border-right:0;
-      border-bottom:2px dashed var(--line);
-      display:flex;
-      overflow-x:auto;
-      -webkit-overflow-scrolling:touch;
-      padding:0;
-      align-items:center;
-      background:var(--panel);
+      border-bottom:3px solid var(--ink);
+      z-index:99;
+      padding:20px;
+      box-shadow:0 12px 30px rgba(28,26,23,0.25);
+      overflow-y:auto;
+      display:none; /* toggled via JS class */
+    }
+    .sidebar.mobile-open{
+      display:block;
+      animation:stampIn .25s ease both;
     }
     .sidebar .label{
-      display:none;
+      font-size:11px;
+      letter-spacing:3px;
+      color:var(--heading);
+      padding-bottom:12px;
+      margin-bottom:14px;
+      border-bottom:2px solid var(--heading);
     }
     .sidebar nav{
-      display:flex;
-      gap:4px;
-      padding:0 8px;
+      display:grid;
+      grid-template-columns:repeat(auto-fit, minmax(200px, 1fr));
+      gap:8px;
     }
     .sidebar nav a{
-      white-space:nowrap;
-      border-left:0;
-      border-bottom:3px solid transparent;
-      padding:10px 14px;
+      padding:12px 14px;
       font-size:13px;
-      flex-shrink:0;
-      background:var(--bg);
-      margin:4px 0;
+      background:var(--panel);
+      border:1px solid var(--line);
+      border-left:4px solid var(--heading);
+      border-radius:0;
+      margin:0;
+      transition:all .15s ease;
     }
     .sidebar nav a::before{
-      content:"";
+      content:"# ";
+      color:var(--green);
+    }
+    .sidebar nav a:hover{
+      background:var(--shadow);
     }
     .sidebar nav a.active{
       background:var(--ink);
       color:var(--bg);
-      border-bottom-color:var(--heading);
+      border-left-color:var(--green);
+      box-shadow:3px 3px 0 var(--shadow);
     }
     .viewport{
-      padding:24px 20px;
+      padding:24px 18px;
       overflow-y:auto;
     }
     .statusbar{
-      font-size:9.5px;
-      padding:0 10px;
-      gap:8px;
-      letter-spacing:1px;
+      font-size:10px;
+      padding:0 12px;
+      letter-spacing:1.2px;
     }
     .statusbar span:nth-child(2){
       display:none;
@@ -218,25 +243,14 @@
   }
 
   @media(max-width:480px){
-    .titlebar .path{
-      font-size:10.5px;
-      overflow:hidden;
-      text-overflow:ellipsis;
-      white-space:nowrap;
-      max-width:220px;
+    .sidebar nav{
+      grid-template-columns:1fr;
     }
     .viewport{
-      padding:16px 12px;
+      padding:18px 14px;
     }
     main h1{
-      font-size:1.25rem;
-    }
-    main h2{
-      font-size:1rem;
-    }
-    main pre{
-      padding:8px 10px;
-      font-size:.82em;
+      font-size:1.3rem;
     }
   }
   @media(prefers-reduced-motion:reduce){*{animation:none !important; transition:none !important}}
@@ -304,7 +318,21 @@ function show(i){
       "<h1 class='nf'>404</h1><blockquote>That page fell behind the desk. Ask Friday.</blockquote>"; });
 }
 nav.addEventListener("click", e=>{
-  if(e.target.dataset.i) show(+e.target.dataset.i);
+  const a = e.target.closest("a");
+  if(a && a.dataset.i !== undefined) {
+    show(+a.dataset.i);
+    // close drawer on mobile after selection
+    if(window.innerWidth <= 1024) {
+      document.querySelector(".sidebar").classList.remove("mobile-open");
+    }
+  }
+});
+
+// toggle drawer on titlebar click for mobile/tablet
+document.querySelector(".titlebar").addEventListener("click", ()=>{
+  if(window.innerWidth <= 1024) {
+    document.querySelector(".sidebar").classList.toggle("mobile-open");
+  }
 });
 const h = location.hash.slice(1);
 const start = h ? PAGES.findIndex(p=>p.file.startsWith(h)) : 0;
