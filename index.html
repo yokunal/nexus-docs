@@ -163,11 +163,16 @@
       padding:0 14px;
       justify-content:space-between;
       z-index:100;
+      cursor:pointer;
     }
     .titlebar .path::after{
-      content:" ▾";
-      color:var(--heading);
+      content:" ▾ [INDEX]";
+      color:var(--green);
       font-weight:bold;
+      margin-left:6px;
+      background:var(--panel);
+      padding:2px 6px;
+      border:1px solid var(--line);
     }
     .rev{
       display:none;
