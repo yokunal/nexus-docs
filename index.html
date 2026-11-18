@@ -147,23 +147,97 @@
   .statusbar .right b{color:var(--heading)}
   /* ── 404 ── */
   main .nf{color:var(--heading); font-size:3rem; letter-spacing:6px}
-  /* ── mobile: rail on top ── */
-  @media(max-width:820px){
+  /* ── mobile & tablet responsive styling ── */
+  @media(max-width:1024px){
     body{
       grid-template-columns:1fr;
-      grid-template-rows:46px 42px 1fr 32px;
-      grid-template-areas:"titlebar" "sidebar" "viewport" "statusbar";
+      grid-template-rows:46px 48px 1fr 32px;
+      grid-template-areas:
+        "titlebar"
+        "sidebar"
+        "viewport"
+        "statusbar";
+      height:100vh;
+      overflow:hidden;
+    }
+    .titlebar{
+      padding:0 10px;
+    }
+    .rev{
+      display:none;
     }
     .sidebar{
-      border-right:0; border-bottom:2px dashed var(--line);
-      display:flex; overflow-x:auto; padding:0; align-items:stretch;
+      border-right:0;
+      border-bottom:2px dashed var(--line);
+      display:flex;
+      overflow-x:auto;
+      -webkit-overflow-scrolling:touch;
+      padding:0;
+      align-items:center;
+      background:var(--panel);
     }
-    .sidebar .label{display:none}
-    .sidebar nav{display:flex}
-    .sidebar nav a{white-space:nowrap; border-left:0; border-bottom:3px solid transparent; padding:10px 12px}
-    .sidebar nav a.active{border-bottom-color:var(--heading)}
-    .sidebar nav a::before{content:""}
-    .viewport{padding:22px 18px}
+    .sidebar .label{
+      display:none;
+    }
+    .sidebar nav{
+      display:flex;
+      gap:4px;
+      padding:0 8px;
+    }
+    .sidebar nav a{
+      white-space:nowrap;
+      border-left:0;
+      border-bottom:3px solid transparent;
+      padding:10px 14px;
+      font-size:13px;
+      flex-shrink:0;
+      background:var(--bg);
+      margin:4px 0;
+    }
+    .sidebar nav a::before{
+      content:"";
+    }
+    .sidebar nav a.active{
+      background:var(--ink);
+      color:var(--bg);
+      border-bottom-color:var(--heading);
+    }
+    .viewport{
+      padding:24px 20px;
+      overflow-y:auto;
+    }
+    .statusbar{
+      font-size:9.5px;
+      padding:0 10px;
+      gap:8px;
+      letter-spacing:1px;
+    }
+    .statusbar span:nth-child(2){
+      display:none;
+    }
+  }
+
+  @media(max-width:480px){
+    .titlebar .path{
+      font-size:10.5px;
+      overflow:hidden;
+      text-overflow:ellipsis;
+      white-space:nowrap;
+      max-width:220px;
+    }
+    .viewport{
+      padding:16px 12px;
+    }
+    main h1{
+      font-size:1.25rem;
+    }
+    main h2{
+      font-size:1rem;
+    }
+    main pre{
+      padding:8px 10px;
+      font-size:.82em;
+    }
   }
   @media(prefers-reduced-motion:reduce){*{animation:none !important; transition:none !important}}
   @media print{
