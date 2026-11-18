@@ -48,7 +48,20 @@
   nav a{
     display:block; padding:6px 20px; color:var(--ink); text-decoration:none;
     border-left:3px solid transparent; font-size:13.5px; cursor:pointer;
-    transition:background .12s;
+    transition:background .12s, transform .12s;
+  }
+  a:hover, button:hover{transform:translate(-1px,-1px)}
+  a:active, button:active{transform:translate(1px,1px)}
+  @keyframes stampIn{
+    0%{opacity:0; transform:translateY(10px) scale(.96)}
+    100%{opacity:1; transform:none}
+  }
+  @keyframes barSweep{
+    from{width:0}
+    to{width:100%}
+  }
+  @media (prefers-reduced-motion: reduce){
+    *{animation:none !important; transition:none !important}
   }
   nav a:hover{background:var(--paper)}
   nav a.active{border-left-color:var(--heading); color:var(--heading); font-weight:600}
@@ -59,6 +72,16 @@
   main h1::after{
     content:""; display:block; margin-top:12px;
     border-bottom:2px solid var(--ink); width:100%;
+  }
+  main h1 span.note{color:var(--dim); font-size:13px; font-weight:400; letter-spacing:2px}
+  h1 em.note{font-style:normal; color:var(--dim); font-size:12px; letter-spacing:2px; margin-left:8px}
+  .rule-sweep{
+    height:2px; background:var(--ink); margin-top:12px;
+    animation:barSweep 1.1s cubic-bezier(.22,1,.36,1) both;
+  }
+  nav a.active{
+    background:var(--ink); color:var(--paper);
+    text-decoration:none;
   }
   main h2{
     font-size:19px; color:var(--heading); margin-top:40px;
@@ -118,7 +141,8 @@
 </head>
 <body>
 <header>
-  <h1>⌂ NEXUS<span>//FRIDAY</span></h1>
+  <h1>⌂ NEXUS<span>//FRIDAY</span> <em class="note">DOCS · REV 4</em></h1>
+  <div class="rule-sweep"></div>
   <span class="status"><b>ON-LINE</b> · docs · paper edition</span>
 </header>
 <div class="layout">
@@ -152,10 +176,15 @@ function show(i){
   const page = PAGES[i];
   document.querySelectorAll("nav a").forEach(a=>
     a.classList.toggle("active", +a.dataset.i===i));
+  const content = document.getElementById("content");
   fetch(page.file)
     .then(r=>{ if(!r.ok) throw 0; return r.text(); })
     .then(md=>{
-      document.getElementById("content").innerHTML = marked.parse(md);
+      content.innerHTML = marked.parse(md);
+      // stamp-in reveal for main blocks + staggered section sweep
+      content.style.animation = "none";
+      void content.offsetWidth;
+      content.style.animation = "stampIn .35s ease both";
       window.scrollTo({top:0});
       history.replaceState(null,"","#"+page.file.replace(/\.md$/,""));
     })
