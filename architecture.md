@@ -1,3 +1,9 @@
+```text
+  __  __ ____ ___ _  _ ____ _ ____ 
+ |  \ |___  |  |__| |___ | [__  
+ |__/ |___  |  |  | |___ | ___] 
+```
+
 # Architecture
 
 Nexus is built in **native Rust**. The design favors declarative contracts,
