@@ -35,18 +35,28 @@
   }
   ::selection{background:var(--ink); color:var(--bg)}
 
-  /* ── titlebar: window chrome ── */
+  /* ── titlebar: custom Linux TTY / Bash prompt styling ── */
   .titlebar{
     grid-area:titlebar;
-    display:flex; align-items:center; gap:12px;
+    display:flex; align-items:center; gap:10px;
     background:var(--ink); color:var(--bg);
     padding:0 14px; border-bottom:2px solid var(--line);
   }
-  .dots{display:flex; gap:6px}
-  .dots span{width:10px; height:10px; border-radius:50%; background:var(--bg)}
-  .dots span:nth-child(1){background:var(--heading)}
-  .dots span:nth-child(2){background:var(--green)}
-  .dots span:nth-child(3){background:transparent; border:1px solid var(--bg)}
+  .dots{display:none} /* Removed macOS traffic light dots */
+  .linux-prompt{
+    font-family:var(--font);
+    font-size:11.5px;
+    letter-spacing:.5px;
+    color:var(--bg);
+    white-space:nowrap;
+  }
+  .linux-prompt .user{color:var(--green); font-weight:bold}
+  .linux-prompt .at{color:var(--dim)}
+  .linux-prompt .host{color:var(--heading); font-weight:bold}
+  .linux-prompt .colon{color:var(--bg)}
+  .linux-prompt .path-dir{color:var(--green)}
+  .linux-prompt .dollar{color:var(--heading); font-weight:bold}
+
   .path{font-size:12px; letter-spacing:1px; opacity:.9}
   .rev{
     margin-left:auto; font-size:10.5px; letter-spacing:2px;
@@ -275,7 +285,7 @@
 </head>
 <body>
 <div class="titlebar">
-  <div class="dots"><span></span><span></span><span></span></div>
+  <div class="linux-prompt"><span class="user">nexus</span><span class="at">@</span><span class="host">friday</span><span class="colon">:</span><span class="path-dir">~/docs</span><span class="dollar">$</span></div>
   <span class="path">nexus://friday/docs — paper-frame</span>
   <span class="rev">REV 5</span>
 </div>
