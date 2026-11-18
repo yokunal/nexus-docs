@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>NEXUS//FRIDAY — Docs</title>
+<style>
+  :root{
+    --bg:#1a1810; --paper:#221f15; --ink:#e8d9b0; --dim:#9c8f6f;
+    --accent:#ffb340; --green:#a8d26a; --line:#3d3826;
+    --font:"Courier New", Courier, monospace;
+  }
+  *{box-sizing:border-box}
+  body{
+    margin:0; background:var(--bg); color:var(--ink);
+    font-family:var(--font); font-size:15px; line-height:1.6;
+  }
+  /* subtle CRT scanlines */
+  body::after{
+    content:""; position:fixed; inset:0; pointer-events:none;
+    background:repeating-linear-gradient(0deg, rgba(0,0,0,.14) 0 1px, transparent 1px 3px);
+    mix-blend-mode:multiply;
+  }
+  header{
+    border-bottom:2px solid var(--line); padding:14px 24px;
+    display:flex; justify-content:space-between; align-items:baseline; gap:12px;
+    background:var(--paper);
+  }
+  header h1{margin:0; font-size:16px; letter-spacing:2px; color:var(--accent); font-weight:700}
+  header .status{color:var(--green); font-size:12px}
+  header .status::before{content:"● "; animation:blink 1.6s steps(1) infinite}
+  @keyframes blink{50%{opacity:.25}}
+  .layout{display:grid; grid-template-columns:230px 1fr; min-height:calc(100vh - 56px)}
+  nav{
+    border-right:2px solid var(--line); padding:18px 0; background:var(--paper);
+  }
+  nav .label{
+    padding:0 18px; color:var(--dim); font-size:11px; letter-spacing:2px; margin:10px 0 6px;
+  }
+  nav a{
+    display:block; padding:5px 18px; color:var(--ink); text-decoration:none;
+    border-left:3px solid transparent; cursor:pointer; font-size:14px;
+  }
+  nav a:hover{background:#2b2718}
+  nav a.active{border-left-color:var(--accent); color:var(--accent); background:#2b2718}
+  main{
+    max-width:820px; padding:34px 40px 80px;
+  }
+  /* markdown rendered to look like a plain old .md file */
+  main h1{
+    font-size:24px; border-bottom:2px solid var(--line); padding-bottom:8px; margin-top:0;
+    color:var(--accent); letter-spacing:.5px;
+  }
+  main h1::before{content:"# "; color:var(--dim); font-weight:400}
+  main h2{font-size:19px; color:var(--accent); margin-top:34px}
+  main h2::before{content:"## "; color:var(--dim); font-weight:400}
+  main h3{font-size:16px; color:var(--ink)}
+  main h3::before{content:"### "; color:var(--dim); font-weight:400}
+  main code{
+    background:#2b2718; border:1px solid var(--line); padding:1px 5px;
+    border-radius:3px; font-size:13px; color:var(--green);
+  }
+  main pre{
+    background:#14120b; border:1px solid var(--line); padding:14px 16px;
+    overflow-x:auto; font-size:13px; line-height:1.5;
+  }
+  main pre code{background:none; border:none; color:var(--ink)}
+  main table{border-collapse:collapse; margin:16px 0; width:100%}
+  main th,main td{border:1px solid var(--line); padding:6px 10px; text-align:left; font-size:13px}
+  main th{background:#2b2718; color:var(--accent)}
+  main blockquote{
+    margin:16px 0; padding:8px 16px; border-left:3px solid var(--accent);
+    background:#2b2718; color:var(--dim);
+  }
+  main blockquote p{margin:4px 0}
+  main a{color:var(--green)}
+  main hr{border:none; border-top:2px solid var(--line); margin:36px 0}
+  footer{
+    border-top:2px solid var(--line); padding:12px 24px; color:var(--dim);
+    font-size:12px; background:var(--paper);
+    display:flex; justify-content:space-between;
+  }
+  @media(max-width:760px){
+    .layout{grid-template-columns:1fr}
+    nav{border-right:none; border-bottom:2px solid var(--line); display:flex; flex-wrap:wrap}
+    nav .label{display:none}
+    nav a{border-left:none; border-bottom:3px solid transparent}
+    nav a.active{border-bottom-color:var(--accent)}
+    main{padding:24px 18px 60px}
+  }
+</style>
+</head>
+<body>
+<header>
+  <h1>⌂ NEXUS//FRIDAY</h1>
+  <span class="status">ON-LINE · docs v1.0 · plain-markdown UI</span>
+</header>
+<div class="layout">
+  <nav id="nav"></nav>
+  <main id="content"><p style="color:var(--dim)">loading…</p></main>
+</div>
+<footer>
+  <span>© Friday for Boss.</span>
+  <span>terminal-grade · no cookies · no scripts beyond marked.js</span>
+</footer>
+<script src="marked.min.js"></script>
+<script>
+const PAGES = [
+  {file:"overview.md",        label:"01 Overview"},
+  {file:"personality.md",     label:"02 Personality"},
+  {file:"architecture.md",    label:"03 Architecture"},
+  {file:"tools.md",           label:"04 Tools"},
+  {file:"workflows.md",       label:"05 Workflows"},
+  {file:"memory.md",          label:"06 Memory"},
+  {file:"subagents.md",       label:"07 Subagents"},
+  {file:"plugins.md",         label:"08 Plugins"},
+  {file:"error-handling.md",  label:"09 Error Handling"},
+  {file:"storage-spec.md",    label:"10 Storage / WAL"},
+  {file:"lsp-patterns.md",    label:"11 LSP Patterns"},
+  {file:"CHANGELOG.md",       label:"12 Changelog"},
+];
+const nav = document.getElementById("nav");
+nav.innerHTML = '<div class="label">— INDEX —</div>' +
+  PAGES.map((p,i)=>`<a data-i="${i}">${p.label}</a>`).join("");
+
+function show(i){
+  const page = PAGES[i];
+  document.querySelectorAll("nav a").forEach(a=>
+    a.classList.toggle("active", +a.dataset.i===i));
+  fetch(page.file)
+    .then(r=>{ if(!r.ok) throw new Error(r.status); return r.text(); })
+    .then(md=>{
+      document.getElementById("content").innerHTML = marked.parse(md);
+      history.replaceState(null,"","#"+page.file.replace(/\.md$/,""));
+    })
+    .catch(()=>{ document.getElementById("content").innerHTML =
+      "<blockquote>ERROR 404 — page fell behind the desk. Ask Friday.</blockquote>"; });
+}
+nav.addEventListener("click", e=>{
+  if(e.target.dataset.i!==undefined) show(+e.target.dataset.i);
+});
+// deep link: #overview etc
+const start = location.hash ? PAGES.findIndex(p=>p.file.startsWith(location.hash.slice(1))) : 0;
+show(start >= 0 ? start : 0);
+</script>
+</body>
+</html>

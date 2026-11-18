@@ -1,0 +1,36 @@
+<!DOCTYPE html><html><head><meta charset=utf-8><title>NEXUS//FRIDAY</title>
+<style>
+body{margin:0;font-family:'Courier New',monospace;background:#16130b;color:#e8d9b0}
+nav{position:fixed;top:0;left:0;bottom:0;width:220px;background:#221f15;border-right:2px solid #3d3826;padding:20px 0;overflow-y:auto}
+nav a{display:block;padding:6px 18px;color:#e8d9b0;text-decoration:none;border-left:3px solid transparent}
+nav a:hover,nav a.on{background:#2b2718;border-left-color:#ffb340;color:#ffb340}
+#logo{color:#ffb340;padding:0 18px 14px;font-weight:bold;letter-spacing:2px}
+#c{margin-left:220px;padding:30px 50px;max-width:760px}
+h1,h2{color:#ffb340;border-bottom:2px solid #3d3826;padding-bottom:6px}
+code,pre{background:#14120b;border:1px solid #3d3826;color:#a8d26a;font-size:13px}
+pre{padding:12px;overflow-x:auto}
+table{border-collapse:collapse}th,td{border:1px solid #3d3826;padding:5px 10px;font-size:13px}th{background:#2b2718;color:#ffb340}
+blockquote{border-left:3px solid #ffb340;background:#2b2718;margin:14px 0;padding:6px 14px;color:#9c8f6f}
+a{color:#a8d26a}
+</style></head><body>
+<nav><div id=logo>⌂ NEXUS//FRIDAY</div><a href="#" onclick="show(0);return false">01 Overview</a><a href="#" onclick="show(1);return false">02 Personality</a><a href="#" onclick="show(2);return false">03 Architecture</a><a href="#" onclick="show(3);return false">04 Tools</a><a href="#" onclick="show(4);return false">05 Workflows</a><a href="#" onclick="show(5);return false">06 Memory</a><a href="#" onclick="show(6);return false">07 Subagents</a><a href="#" onclick="show(7);return false">08 Plugins</a><a href="#" onclick="show(8);return false">09 Error Handling</a><a href="#" onclick="show(9);return false">10 Storage/WAL</a><a href="#" onclick="show(10);return false">11 LSP Patterns</a><a href="#" onclick="show(11);return false">12 Changelog</a></nav>
+<div id=c></div><script src="marked.min.js"></script>
+<script>
+const P=['overview.md', 'personality.md', 'architecture.md', 'tools.md', 'workflows.md', 'memory.md', 'subagents.md', 'plugins.md', 'error-handling.md', 'storage-spec.md', 'lsp-patterns.md', 'CHANGELOG.md'];
+function headings(t){return t.split('\n').map(l=>l.replace(/^(#+) (.*)/,(m,h,x)=>`<h${h.length}>${x}</h${h.length}>`)).join('\n')}
+function md(t){
+ if(window.marked) return marked.parse(t);
+ t=t.replace(/&/g,'&amp;').replace(/</g,'&lt;');
+ t=t.replace(/```([\s\S]*?)```/g,(m,c)=>`<pre><code>${c}</code></pre>`);
+ t=t.replace(/^###### (.*)$/gm,'<h6>$1</h6>').replace(/^##### (.*)$/gm,'<h5>$1</h5>').replace(/^#### (.*)$/gm,'<h4>$1</h4>').replace(/^### (.*)$/gm,'<h3>$1</h3>').replace(/^## (.*)$/gm,'<h2>$1</h2>').replace(/^# (.*)$/gm,'<h1>$1</h1>');
+ t=t.replace(/`([^`]+)`/g,'<code>$1</code>');
+ t=t.replace(/^> (.*)$/gm,'<blockquote>$1</blockquote>');
+ t=t.replace(/^---$/gm,'<hr>');
+ t=t.replace(/\*\*([^*]+)\*\*/g,'<b>$1</b>').replace(/\*([^*]+)\*/g,'<i>$1</i>');
+ t=t.replace(/^\|(.+)\|$/gm,(m)=>m);
+ return '<pre style="white-space:pre-wrap">'+t+'</pre>';
+}
+function render(t){document.getElementById('c').innerHTML=md(t);window.scrollTo(0,0);}
+function show(i){document.querySelectorAll('nav a').forEach((a,j)=>a.classList.toggle('on',i===j));fetch(P[i]).then(r=>r.text()).then(render).catch(()=>render('# ERROR\nfell behind the desk.'))}
+let i=location.hash?P.findIndex(p=>location.hash.includes(p.replace('.md',''))):0;if(i<0)i=0;show(i);
+</script></body></html>

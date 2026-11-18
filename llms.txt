@@ -1,0 +1,32 @@
+# Nexus / Friday — Official Documentation Index
+> Complete reference for Nexus, the autonomous AI coding harness. Agent persona: **Friday**.
+
+Welcome
+- overview
+- personality
+
+Core Concepts
+- overview          # identity + principles + surfaces
+- architecture
+- tools
+- plugins
+
+Interfaces
+- memory
+- subagents
+
+Guides
+- workflows
+- verification
+- storage-invariants
+
+How-to Examples
+- quickstart        # see overview.md
+- workflows
+- examples          # embedded in workflows.md
+
+Reference
+- error-handling
+- storage-spec
+- lsp-patterns
+- CHANGELOG
