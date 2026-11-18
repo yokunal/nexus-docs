@@ -178,7 +178,14 @@
       padding:2px 8px;
       border:1px solid var(--line);
     }
-    .dots{display:none}
+    .dots{
+      display:flex !important;
+      gap:5px;
+    }
+    .dots span{
+      width:8px;
+      height:8px;
+    }
     .rev{display:none}
 
     /* Terminal popup modal overlay instead of top bar */
