@@ -39,7 +39,7 @@
   .titlebar{
     grid-area:titlebar;
     display:flex; align-items:center; gap:10px;
-    background:var(--ink); color:var(--bg);
+    background:#000000; color:#1b5e36;
     padding:0 14px; border-bottom:2px solid var(--line);
   }
   .dots{display:none} /* Removed macOS traffic light dots */
@@ -47,20 +47,21 @@
     font-family:var(--font);
     font-size:11.5px;
     letter-spacing:.5px;
-    color:var(--bg);
+    color:#1b5e36;
     white-space:nowrap;
   }
-  .linux-prompt .user{color:var(--green); font-weight:bold}
-  .linux-prompt .at{color:var(--dim)}
-  .linux-prompt .host{color:var(--heading); font-weight:bold}
-  .linux-prompt .colon{color:var(--bg)}
-  .linux-prompt .path-dir{color:var(--green)}
-  .linux-prompt .dollar{color:var(--heading); font-weight:bold}
+  .linux-prompt .user{color:#1b5e36; font-weight:bold}
+  .linux-prompt .at{color:#173320}
+  .linux-prompt .host{color:#1b5e36; font-weight:bold}
+  .linux-prompt .colon{color:#1b5e36}
+  .linux-prompt .path-dir{color:#1b5e36}
+  .linux-prompt .dollar{color:#1b5e36; font-weight:bold}
 
-  .path{font-size:12px; letter-spacing:1px; opacity:.9}
+  .path{font-size:12px; letter-spacing:1px; opacity:.9; color:#1b5e36}
   .rev{
     margin-left:auto; font-size:10.5px; letter-spacing:2px;
-    border:1px solid var(--bg); padding:2px 8px;
+    background:#000000; color:#1b5e36;
+    border:1px solid var(--line); padding:2px 8px;
     animation:stampIn .4s ease .3s both;
   }
   /* ── sidebar ── */
